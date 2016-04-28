@@ -6,7 +6,7 @@
 
 .container {
   /* position: absolute 0 0; */
-  padding: 1rem;
+  padding: 0;
   /* width: width(var(--cover-image)); */
   /* height: height(var(--cover-image)); */
   /* background: resolve(var(--cover-image)); */

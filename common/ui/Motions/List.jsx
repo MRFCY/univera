@@ -1,24 +1,56 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {fetchEvents} from './action';
 import {Link} from 'react-router';
+import styles from './styles.css';
 
-const motionList = [
-  {name: 'basic-scrolling', text: '基础滚动触发动效'}
-];
+const mapStateToProps = ({marvel}) => ({marvel});
 
-export default class MotionsList extends Component {
+export class MotionsList extends Component {
+  componentDidMount() {
+    this.props.fetchEvents();
+
+    this.controller = new ScrollMagic.Controller({
+      container: this.wrapper.parentElement,
+      globalSceneOptions: {triggerHook: 0},
+    });
+
+    this.scenes = Array.from(this.wrapper.querySelectorAll('section')).map(s => {
+      return new ScrollMagic.Scene({triggerElement: s, duration: 504})
+        .setPin(s, {pushFollowers: false})
+        .addTo(this.controller)
+        .addIndicators();
+    });
+  }
+
+  componentWillUnmount() {
+    this.scenes.forEach(scene => scene.removeIndicators().destroy(true));
+  }
+
   render() {
-    return <content>
+    return <content ref={node => this.wrapper = node}>
       <header>
-        <h3>Please select a motion to preview: </h3>
+        <h3>{this.props.marvel.events.attributionText}</h3>
       </header>
-      <ul>{
-        motionList.map(motion => <li key={motion.name}>
-          <Link to={{
-            pathname: `/motions/${motion.name}`,
-            state: {enter: 'Right', leave: 'Left'}
-          }}>{motion.text}</Link>
-        </li>)
-      }</ul>
+      {this.renderEventsList(this.props.marvel.events)}
     </content>;
   }
+
+  renderEventsList(events) {
+    return events.data && events.data.results.map(event => <section
+      key={event.id}
+    >
+      <img
+        className={styles.thumbnail}
+        src={`${event.thumbnail.path}.${event.thumbnail.extension}`}
+      />
+      <h3>{event.title}</h3>
+      <p>{event.description}</p>
+      <Link to={{
+        pathname: `/motions/wipe-motion`, state: {enter: 'Right', leave: 'Left'}
+      }}>See Characters</Link>
+    </section>);
+  }
 }
+
+export default connect(mapStateToProps, {fetchEvents})(MotionsList);

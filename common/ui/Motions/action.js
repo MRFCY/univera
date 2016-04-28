@@ -1,24 +1,14 @@
 import fetch from 'fetch';
 
-export const endpoint = 'http://api.football-data.org/v1';
-
-export const opts = {
-  headers: {
-    'X-Response-Control': 'full',
-    'X-Auth-Token': '6f71dbba537b44139bedc0edc89d8920',
-  }
-};
-
 export const parseToJSON = response => response.json();
 
-export const FETCH_ARSENAL_TEAM = '读取－阿森纳俱乐部';
-export const fetchArsenalTeam = () => ({
-  type: FETCH_ARSENAL_TEAM,
-  payload: fetch(`${endpoint}/teams/57`, opts).then(parseToJSON)
-});
+export const endpoint = 'http://gateway.marvel.com/v1/public';
+export const apikey = '5f6c4928bc09049a0a89098a2fe3803f';
 
-export const FETCH_ARSENAL_PLAYERS = '获取－阿森纳运动员';
-export const fetchArsenalPlayers = () => ({
-  type: FETCH_ARSENAL_PLAYERS,
-  payload: fetch(`${endpoint}/teams/57/players`, opts).then(parseToJSON)
+export const FETCH_EVENTS = '读取－事件';
+export const fetchEvents = () => ({
+  type: FETCH_EVENTS,
+  payload: fetch(
+    `${endpoint}/events?characters=1009368&limit=12&apikey=${apikey}`
+  ).then(parseToJSON)
 });
