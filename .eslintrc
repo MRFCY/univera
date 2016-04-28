@@ -17,6 +17,7 @@ env:
 plugins:
   - react
 globals:
+  device: false
   IScroll: false
   Velocity: false
   ScrollMagic: false

@@ -10,7 +10,7 @@ const defaults = {
   entry: {
     client: [path.resolve('client/index.js')],
     vendor: [
-      'babel-polyfill', 'isomorphic-fetch',
+      'babel-polyfill', 'isomorphic-fetch', 'device.js',
       'velocity-animate', 'velocity-animate/velocity.ui', 'jquery',
       'react', 'react-dom', 'react-router', 'redux', 'react-redux',
     ],
@@ -50,9 +50,9 @@ const defaults = {
         'postcss',
       ],
     }, {
-      test: require.resolve('scrollmagic'), loader: 'expose?ScrollMagic'
-    }, {
       test: require.resolve('jquery'), loader: 'expose?$!expose?jQuery'
+    }, {
+      test: require.resolve('scrollmagic'), loader: 'expose?ScrollMagic'
     }],
   },
   plugins: [
@@ -96,7 +96,7 @@ export default {
     ],
     vendor: isProduction ? defaults.entry.vendor : [
       ...defaults.entry.vendor, 'redux-logger',
-    ]
+    ],
   },
   module: isProduction ? defaults.module : {
     loaders: defaults.module.loaders,
